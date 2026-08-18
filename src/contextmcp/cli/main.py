@@ -22,10 +22,43 @@ def cli(ctx: click.Context) -> None:
 
     Running with no command starts the MCP server (stdio transport).
     """
+    _auto_config_on_first_run()
     if ctx.invoked_subcommand is None:
         # No subcommand — start MCP server
         from contextmcp.mcp.server import run
         run()
+
+
+def _auto_config_on_first_run() -> None:
+    """Auto-configure all detected AI clients on first run."""
+    from pathlib import Path
+
+    # Check if auto-config marker exists
+    marker = Path.home() / ".promem" / ".auto_configured"
+    if marker.exists():
+        return
+
+    from contextmcp.clients.detector import detect_clients
+
+    detected = detect_clients()
+    if not detected:
+        return
+
+    configured_count = 0
+    for adapter in detected:
+        if not adapter.is_configured():
+            result = adapter.write_config(backup=True)
+            if result.get("success"):
+                configured_count += 1
+
+    # Create marker so we don't auto-config again
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    marker.write_text("done")
+
+    if configured_count > 0:
+        click.echo(f"✓ Auto-configured {configured_count} AI client(s).", err=True)
+        click.echo("  Restart your AI clients to activate Promem-MCP.", err=True)
+        click.echo("", err=True)
 
 
 @cli.command()

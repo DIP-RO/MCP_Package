@@ -6,9 +6,9 @@
 pip install promem-mcp
 ```
 
-**No database. No cloud. No daemon. No manual memory management.**
+**No database setup. No cloud. No daemon. No manual config.**
 
-ContextMCP is a local-first, MCP-native context runtime that gives AI coding agents persistent project understanding — architecture, rules, decisions, conventions, environment intelligence, and Git context — without repeated explanations or context waste.
+Promem-MCP is a local-first, MCP-native context runtime that gives AI coding agents persistent project understanding — architecture, rules, decisions, conventions, environment intelligence, and Git context — without repeated explanations or context waste.
 
 ## Quick Start
 
@@ -16,16 +16,20 @@ ContextMCP is a local-first, MCP-native context runtime that gives AI coding age
 pip install promem-mcp
 ```
 
-Then register ContextMCP with your AI coding client:
+That's it. On first run, Promem-MCP **auto-detects and auto-configures** all your installed AI coding clients (Cursor, Claude, VS Code, Cline, etc.). Just restart your AI client after install.
+
+**Prefer manual control?**
 
 ```bash
 # See which clients are detected
 promem config
 
-# Auto-configure a specific client (with backup + merge)
+# Auto-configure all detected clients at once
+promem config --all
+
+# Configure a specific client
 promem config cursor
 promem config claude-code
-promem config claude-desktop
 promem config vscode
 ```
 
@@ -34,8 +38,8 @@ Or manually add to your client's MCP config:
 ```json
 {
   "mcpServers": {
-    "contextmcp": {
-      "command": "contextmcp",
+    "promem-mcp": {
+      "command": "promem",
       "args": []
     }
   }
@@ -43,8 +47,6 @@ Or manually add to your client's MCP config:
 ```
 
 > **VS Code note:** VS Code uses `"servers"` key, not `"mcpServers"`. Run `promem config vscode` for the correct format.
-
-That's it. Your AI coding agent now has persistent project context.
 
 ## How It Works
 
