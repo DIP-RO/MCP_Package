@@ -1,9 +1,9 @@
-# D-MCP
+# Promem-MCP
 
-> Persistent project context for AI coding agents. Built by DIP-RO.
+> Project Memory MCP — persistent project context for AI coding agents. Built by DIP-RO.
 
 ```bash
-pip install d-mcp
+pip install promem-mcp
 ```
 
 **No database. No cloud. No daemon. No manual memory management.**
@@ -13,20 +13,20 @@ ContextMCP is a local-first, MCP-native context runtime that gives AI coding age
 ## Quick Start
 
 ```bash
-pip install d-mcp
+pip install promem-mcp
 ```
 
 Then register ContextMCP with your AI coding client:
 
 ```bash
 # See which clients are detected
-dmcp config
+promem config
 
 # Auto-configure a specific client (with backup + merge)
-dmcp config cursor
-dmcp config claude-code
-dmcp config claude-desktop
-dmcp config vscode
+promem config cursor
+promem config claude-code
+promem config claude-desktop
+promem config vscode
 ```
 
 Or manually add to your client's MCP config:
@@ -42,14 +42,14 @@ Or manually add to your client's MCP config:
 }
 ```
 
-> **VS Code note:** VS Code uses `"servers"` key, not `"mcpServers"`. Run `dmcp config vscode` for the correct format.
+> **VS Code note:** VS Code uses `"servers"` key, not `"mcpServers"`. Run `promem config vscode` for the correct format.
 
 That's it. Your AI coding agent now has persistent project context.
 
 ## How It Works
 
 ```
-pip install d-mcp
+pip install promem-mcp
         │
         ▼
 ┌───────────────────┐
@@ -115,34 +115,34 @@ Context  Context Context
 
 ```bash
 contextmcp --version        # Version
-dmcp status           # Project + storage status
-dmcp doctor           # Health checks
-dmcp stats            # Usage statistics
-dmcp search "query"   # Search context
-dmcp memory list      # List memories
-dmcp decision "text"  # Save a decision
-dmcp privacy          # Privacy info
-dmcp config           # Client configuration
-dmcp repair           # Rebuild index, optimize DB
-dmcp reset            # Delete all data (with confirmation)
+promem status           # Project + storage status
+promem doctor           # Health checks
+promem stats            # Usage statistics
+promem search "query"   # Search context
+promem memory list      # List memories
+promem decision "text"  # Save a decision
+promem privacy          # Privacy info
+promem config           # Client configuration
+promem repair           # Rebuild index, optimize DB
+promem reset            # Delete all data (with confirmation)
 ```
 
 ## Client Support
 
 | Client | Auto-config? | Config Key |
 |--------|-------------|------------|
-| Claude Code | `dmcp config claude-code` | `mcpServers` |
-| Claude Desktop | `dmcp config claude-desktop` | `mcpServers` |
-| Cursor | `dmcp config cursor` | `mcpServers` |
-| VS Code / Copilot | `dmcp config vscode` | `servers` |
-| OpenCode | `dmcp config opencode` | `mcp` |
-| Gemini CLI | `dmcp config gemini-cli` | `mcpServers` |
-| Windsurf | `dmcp config windsurf` | `mcpServers` |
-| Cline | `dmcp config cline` | `mcpServers` |
-| Roo Code | `dmcp config roo-code` | `mcpServers` |
-| Amazon Q | `dmcp config amazon-q` | `mcpServers` |
-| ZCode (GLM/Zhipu) | `dmcp config zcode` | `mcpServers` |
-| Tabnine | `dmcp config tabnine` | `mcpServers` |
+| Claude Code | `promem config claude-code` | `mcpServers` |
+| Claude Desktop | `promem config claude-desktop` | `mcpServers` |
+| Cursor | `promem config cursor` | `mcpServers` |
+| VS Code / Copilot | `promem config vscode` | `servers` |
+| OpenCode | `promem config opencode` | `mcp` |
+| Gemini CLI | `promem config gemini-cli` | `mcpServers` |
+| Windsurf | `promem config windsurf` | `mcpServers` |
+| Cline | `promem config cline` | `mcpServers` |
+| Roo Code | `promem config roo-code` | `mcpServers` |
+| Amazon Q | `promem config amazon-q` | `mcpServers` |
+| ZCode (GLM/Zhipu) | `promem config zcode` | `mcpServers` |
+| Tabnine | `promem config tabnine` | `mcpServers` |
 
 No client supports true zero-config auto-registration. ContextMCP detects installed clients, offers to write config (with backup + merge), and provides exact copy-paste snippets.
 
@@ -154,7 +154,7 @@ No client supports true zero-config auto-registration. ContextMCP detects instal
 - **No cloud dependencies**
 
 ```bash
-dmcp privacy
+promem privacy
 ```
 
 ## Storage Location
@@ -175,7 +175,7 @@ Override with `CONTEXTMCP_DATA_DIR` environment variable if needed.
 
 ```bash
 # pip
-pip install d-mcp
+pip install promem-mcp
 
 # uv
 uv add contextmcp

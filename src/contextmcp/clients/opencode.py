@@ -6,6 +6,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -36,17 +37,17 @@ class OpenCodeAdapter(ClientAdapter):
             appdata = os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")
             return Path(appdata) / "opencode" / "opencode.json"
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
             "type": "local",
-            "command": ["dmcp"],
+            "command": ["promem"],
             "enabled": True,
         }
 
     def get_config_key(self) -> str:
         return "mcp"
 
-    def write_config(self, backup: bool = True) -> dict:
+    def write_config(self, backup: bool = True) -> dict[str, Any]:
         """Write config with OpenCode's nested 'mcp' structure."""
         config_path = self.get_config_path()
         if config_path is None:
@@ -54,7 +55,7 @@ class OpenCodeAdapter(ClientAdapter):
 
         config_path.parent.mkdir(parents=True, exist_ok=True)
 
-        existing: dict = {}
+        existing: dict[str, Any] = {}
         if config_path.exists():
             try:
                 existing = json.loads(config_path.read_text(errors="replace"))
@@ -72,14 +73,14 @@ class OpenCodeAdapter(ClientAdapter):
         if key not in existing:
             existing[key] = {}
 
-        if "d-mcp" in existing[key]:
+        if "promem-mcp" in existing[key]:
             return {
                 "success": True,
                 "message": "ContextMCP already configured",
                 "path": str(config_path),
             }
 
-        existing[key]["d-mcp"] = self.get_config_snippet()
+        existing[key]["promem-mcp"] = self.get_config_snippet()
 
         try:
             config_path.write_text(json.dumps(existing, indent=2))
@@ -88,7 +89,7 @@ class OpenCodeAdapter(ClientAdapter):
             return {"success": False, "error": str(e)}
 
     def get_instructions(self) -> str:
-        snippet = json.dumps({"mcp": {"d-mcp": self.get_config_snippet()}}, indent=2)
+        snippet = json.dumps({"mcp": {"promem-mcp": self.get_config_snippet()}}, indent=2)
         config_path = self.get_config_path()
         path_str = str(config_path) if config_path else "opencode.json"
         return (

@@ -190,7 +190,7 @@ def cmd_stats() -> int:
     print()
 
     # Estimate raw vs selected context
-    all_memories = engine.memory.list(project_id=project_id, limit=10000)
+    all_memories = engine.memory.list_memories(project_id=project_id, limit=10000)
     raw_tokens = sum(estimate_tokens(m.get("content", "")) for m in all_memories)
     print("Estimated raw context:")
     print(f"  {raw_tokens:,} tokens")
@@ -245,7 +245,7 @@ def cmd_search(
 def cmd_memory_list(scope: str | None = None, limit: int = 20) -> int:
     """List memories."""
     engine = get_engine()
-    memories = engine.memory.list(project_id=engine.project_id, scope=scope, limit=limit)
+    memories = engine.memory.list_memories(project_id=engine.project_id, scope=scope, limit=limit)
     if not memories:
         print("No memories found.")
         return 0
@@ -281,7 +281,10 @@ def cmd_decision(content: str, reason: str | None = None) -> int:
         reason=reason,
         project_id=engine.project_id,
     )
-    print(f"Saved decision: {mem['id']}")
+    if mem is not None:
+        print(f"Saved decision: {mem['id']}")
+    else:
+        print("Failed to save decision")
     return 0
 
 

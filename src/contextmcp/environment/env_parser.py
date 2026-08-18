@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from contextmcp.security.redaction import is_likely_secret
 
@@ -56,7 +57,7 @@ def get_env_keys(path: Path) -> list[str]:
     return keys
 
 
-def compare_env_files(env_path: Path, example_path: Path) -> dict:
+def compare_env_files(env_path: Path, example_path: Path) -> dict[str, Any]:
     """Compare .env with .env.example for diagnostics."""
     env_keys = set(get_env_keys(env_path))
     example_keys = set(get_env_keys(example_path))

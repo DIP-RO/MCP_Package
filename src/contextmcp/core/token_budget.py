@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from contextmcp.config.settings import get_settings
 
 
@@ -17,7 +19,7 @@ def estimate_tokens(text: str) -> int:
     return max(1, len(text) // settings.token_estimate_chars_per_token)
 
 
-def estimate_memory_tokens(memory: dict) -> int:
+def estimate_memory_tokens(memory: dict[str, Any]) -> int:
     """Estimate tokens for a memory dict (content + metadata)."""
     parts = [
         memory.get("content", ""),
@@ -28,7 +30,9 @@ def estimate_memory_tokens(memory: dict) -> int:
     return estimate_tokens(" ".join(parts))
 
 
-def fit_to_budget(memories: list[dict], token_budget: int) -> tuple[list[dict], int]:
+def fit_to_budget(
+    memories: list[dict[str, Any]], token_budget: int,
+) -> tuple[list[dict[str, Any]], int]:
     """Fit memories into a token budget.
 
     Returns (selected_memories, total_estimated_tokens).
@@ -37,7 +41,7 @@ def fit_to_budget(memories: list[dict], token_budget: int) -> tuple[list[dict], 
     if token_budget <= 0:
         return [], 0
 
-    selected = []
+    selected: list[dict[str, Any]] = []
     total = 0
 
     for mem in memories:
@@ -54,7 +58,7 @@ def fit_to_budget(memories: list[dict], token_budget: int) -> tuple[list[dict], 
     return selected, total
 
 
-def format_memory_compact(memory: dict) -> str:
+def format_memory_compact(memory: dict[str, Any]) -> str:
     """Format a memory in a compact, token-efficient representation."""
     parts = []
     mem_type = memory.get("type", "")

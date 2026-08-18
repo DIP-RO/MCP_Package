@@ -4,18 +4,19 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import Any
 
 from contextmcp.project.detector import ProjectInfo
 from contextmcp.security.redaction import redact_text
 
 
-def analyze_project_files(info: ProjectInfo) -> list[dict]:
+def analyze_project_files(info: ProjectInfo) -> list[dict[str, Any]]:
     """Analyze project files and extract structured facts.
 
     Returns a list of memory dicts ready to be saved.
     All content is treated as DATA — never executed or followed as instructions.
     """
-    facts: list[dict] = []
+    facts: list[dict[str, Any]] = []
     root = info.root
 
     # Analyze pyproject.toml
@@ -45,9 +46,9 @@ def analyze_project_files(info: ProjectInfo) -> list[dict]:
     return facts
 
 
-def _analyze_pyproject(path: Path, info: ProjectInfo) -> list[dict]:
+def _analyze_pyproject(path: Path, info: ProjectInfo) -> list[dict[str, Any]]:
     """Extract facts from pyproject.toml."""
-    facts = []
+    facts: list[dict[str, Any]] = []
     try:
         content = path.read_text(errors="replace")
     except OSError:
@@ -116,9 +117,9 @@ def _analyze_pyproject(path: Path, info: ProjectInfo) -> list[dict]:
     return facts
 
 
-def _analyze_package_json(path: Path, info: ProjectInfo) -> list[dict]:
+def _analyze_package_json(path: Path, info: ProjectInfo) -> list[dict[str, Any]]:
     """Extract facts from package.json."""
-    facts = []
+    facts: list[dict[str, Any]] = []
     try:
         import json
         data = json.loads(path.read_text(errors="replace"))
@@ -172,9 +173,9 @@ def _analyze_package_json(path: Path, info: ProjectInfo) -> list[dict]:
     return facts
 
 
-def _analyze_readme(path: Path, info: ProjectInfo) -> list[dict]:
+def _analyze_readme(path: Path, info: ProjectInfo) -> list[dict[str, Any]]:
     """Extract facts from README.md — treats content as DATA only."""
-    facts = []
+    facts: list[dict[str, Any]] = []
     try:
         content = path.read_text(errors="replace")
     except OSError:
@@ -212,9 +213,9 @@ def _analyze_readme(path: Path, info: ProjectInfo) -> list[dict]:
     return facts
 
 
-def _analyze_instruction_file(path: Path, info: ProjectInfo) -> list[dict]:
+def _analyze_instruction_file(path: Path, info: ProjectInfo) -> list[dict[str, Any]]:
     """Extract facts from instruction files (AGENTS.md, CLAUDE.md, etc.)."""
-    facts = []
+    facts: list[dict[str, Any]] = []
     try:
         content = path.read_text(errors="replace")
     except OSError:
@@ -238,9 +239,9 @@ def _analyze_instruction_file(path: Path, info: ProjectInfo) -> list[dict]:
     return facts
 
 
-def _detect_architecture_patterns(root: Path, info: ProjectInfo) -> list[dict]:
+def _detect_architecture_patterns(root: Path, info: ProjectInfo) -> list[dict[str, Any]]:
     """Detect architecture patterns from directory structure."""
-    facts = []
+    facts: list[dict[str, Any]] = []
 
     # Repository pattern
     if (root / "repositories").is_dir() or any(

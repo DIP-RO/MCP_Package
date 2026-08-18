@@ -6,6 +6,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -35,10 +36,10 @@ class VSCodeAdapter(ClientAdapter):
             return Path.cwd() / ".vscode" / "mcp.json"
         return None  # User config is opened via command palette
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
             "type": "stdio",
-            "command": "dmcp",
+            "command": "promem",
             "args": [],
         }
 
@@ -46,7 +47,7 @@ class VSCodeAdapter(ClientAdapter):
         return "servers"  # VS Code uses 'servers', NOT 'mcpServers'
 
     def get_instructions(self) -> str:
-        snippet = json.dumps({"servers": {"d-mcp": self.get_config_snippet()}}, indent=2)
+        snippet = json.dumps({"servers": {"promem-mcp": self.get_config_snippet()}}, indent=2)
         return (
             "VS Code uses a different config format (key is 'servers', not 'mcpServers').\n\n"
             "Option 1 — Workspace config (.vscode/mcp.json):\n"
@@ -55,9 +56,9 @@ class VSCodeAdapter(ClientAdapter):
             "  1. Press Cmd+Shift+P (macOS) or Ctrl+Shift+P (Windows/Linux)\n"
             "  2. Run 'MCP: Add Server'\n"
             "  3. Choose 'Workspace' or 'Global'\n"
-            "  4. Enter: contextmcp as the server name\n"
-            "  5. Enter: contextmcp as the command\n"
+            "  4. Enter: promem-mcp as the server name\n"
+            "  5. Enter: promem as the command\n"
             "  6. Leave args empty\n\n"
             "Option 3 — CLI:\n"
-            "  code --add-mcp '{\"name\":\"contextmcp\",\"command\":\"contextmcp\",\"args\":[]}'"
+            "  code --add-mcp '{\"name\":\"promem-mcp\",\"command\":\"promem\",\"args\":[]}'"
         )

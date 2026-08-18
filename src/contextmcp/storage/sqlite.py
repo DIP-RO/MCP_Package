@@ -60,7 +60,7 @@ class SQLiteStore:
         framework: str | None = None,
         package_manager: str | None = None,
         python_version: str | None = None,
-        metadata: dict | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> None:
         self.conn.execute(
             """
@@ -87,7 +87,7 @@ class SQLiteStore:
         )
         self.conn.commit()
 
-    def get_project(self, project_id: str) -> dict | None:
+    def get_project(self, project_id: str) -> dict[str, Any] | None:
         row = self.conn.execute(
             "SELECT * FROM projects WHERE id = ?", (project_id,)
         ).fetchone()
@@ -97,7 +97,7 @@ class SQLiteStore:
         d["metadata"] = _json_loads(d.get("metadata"))
         return d
 
-    def get_all_projects(self) -> list[dict]:
+    def get_all_projects(self) -> list[dict[str, Any]]:
         rows = self.conn.execute("SELECT * FROM projects ORDER BY updated_at DESC").fetchall()
         result = []
         for row in rows:
@@ -124,7 +124,7 @@ class SQLiteStore:
         confidence: float = 0.5,
         importance: float = 0.5,
         tags: list[str] | None = None,
-        metadata: dict | None = None,
+        metadata: dict[str, Any] | None = None,
         expires_at: str | None = None,
     ) -> None:
         self.conn.execute(
@@ -148,7 +148,7 @@ class SQLiteStore:
         confidence: float | None = None,
         importance: float | None = None,
         tags: list[str] | None = None,
-        metadata: dict | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> bool:
         sets = []
         params: list[Any] = []
@@ -183,7 +183,7 @@ class SQLiteStore:
         self.conn.commit()
         return cursor.rowcount > 0
 
-    def get_memory(self, mem_id: str) -> dict | None:
+    def get_memory(self, mem_id: str) -> dict[str, Any] | None:
         row = self.conn.execute("SELECT * FROM memories WHERE id = ?", (mem_id,)).fetchone()
         if row is None:
             return None
@@ -196,7 +196,7 @@ class SQLiteStore:
         scope: str | None = None,
         mem_type: str | None = None,
         limit: int = 10,
-    ) -> list[dict]:
+    ) -> list[dict[str, Any]]:
         """Full-text search using FTS5."""
         # Build the FTS query — use simple token matching
         fts_query = _build_fts_query(query)
@@ -237,7 +237,7 @@ class SQLiteStore:
         mem_type: str | None = None,
         limit: int = 100,
         offset: int = 0,
-    ) -> list[dict]:
+    ) -> list[dict[str, Any]]:
         sql = "SELECT * FROM memories WHERE 1=1"
         params: list[Any] = []
         if project_id is not None:
@@ -267,7 +267,9 @@ class SQLiteStore:
         row = self.conn.execute(sql, params).fetchone()
         return row[0] if row else 0
 
-    def find_similar(self, content: str, project_id: str | None, limit: int = 5) -> list[dict]:
+    def find_similar(
+        self, content: str, project_id: str | None, limit: int = 5,
+    ) -> list[dict[str, Any]]:
         """Find memories with similar content for deduplication."""
         fts_query = _build_fts_query(content)
         if not fts_query:
@@ -311,14 +313,14 @@ class SQLiteStore:
         )
         self.conn.commit()
 
-    def get_file(self, project_id: str, file_path: str) -> dict | None:
+    def get_file(self, project_id: str, file_path: str) -> dict[str, Any] | None:
         row = self.conn.execute(
             "SELECT * FROM file_index WHERE project_id = ? AND file_path = ?",
             (project_id, file_path),
         ).fetchone()
         return dict(row) if row else None
 
-    def get_indexed_files(self, project_id: str) -> list[dict]:
+    def get_indexed_files(self, project_id: str) -> list[dict[str, Any]]:
         rows = self.conn.execute(
             "SELECT * FROM file_index WHERE project_id = ?", (project_id,)
         ).fetchall()
@@ -359,7 +361,7 @@ class SQLiteStore:
         )
         self.conn.commit()
 
-    def get_latest_session(self, project_id: str) -> dict | None:
+    def get_latest_session(self, project_id: str) -> dict[str, Any] | None:
         row = self.conn.execute(
             "SELECT * FROM sessions WHERE project_id = ? ORDER BY created_at DESC LIMIT 1",
             (project_id,),
@@ -387,7 +389,7 @@ class SQLiteStore:
         )
         self.conn.commit()
 
-    def get_stats_summary(self, project_id: str | None = None) -> dict:
+    def get_stats_summary(self, project_id: str | None = None) -> dict[str, Any]:
         sql = (
             "SELECT COUNT(*) as count, AVG(latency_ms) as avg_latency "
             "FROM stats WHERE operation = 'search'"
@@ -404,7 +406,7 @@ class SQLiteStore:
 
     # --- Utility ---
 
-    def _row_to_memory(self, row: sqlite3.Row) -> dict:
+    def _row_to_memory(self, row: sqlite3.Row) -> dict[str, Any]:
         d = dict(row)
         d["tags"] = _json_loads(d.get("tags")) or []
         d["metadata"] = _json_loads(d.get("metadata")) or {}

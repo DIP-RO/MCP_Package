@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import math
 from datetime import datetime, timezone
+from typing import Any
 
 
-def rank_memory(memory: dict, query: str, fts_rank: float = 0.0) -> float:
+def rank_memory(memory: dict[str, Any], query: str, fts_rank: float = 0.0) -> float:
     """Compute a relevance score for a memory.
 
     Factors:
@@ -64,10 +65,10 @@ def rank_memory(memory: dict, query: str, fts_rank: float = 0.0) -> float:
     }
     score += source_weights.get(source_type, 1)
 
-    return score
+    return float(score)
 
 
-def rank_memories(memories: list[dict], query: str) -> list[dict]:
+def rank_memories(memories: list[dict[str, Any]], query: str) -> list[dict[str, Any]]:
     """Rank and sort memories by relevance."""
     for mem in memories:
         fts_rank = mem.pop("_rank", 0.0) if "_rank" in mem else mem.get("rank", 0.0)
@@ -76,7 +77,9 @@ def rank_memories(memories: list[dict], query: str) -> list[dict]:
     return memories
 
 
-def deduplicate(memories: list[dict], similarity_threshold: float = 0.7) -> list[dict]:
+def deduplicate(
+    memories: list[dict[str, Any]], similarity_threshold: float = 0.7,
+) -> list[dict[str, Any]]:
     """Remove near-duplicate memories based on content similarity."""
     if not memories:
         return []

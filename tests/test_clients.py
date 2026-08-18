@@ -46,14 +46,14 @@ def test_config_snippets():
     for adapter in get_all_adapters():
         snippet = adapter.get_config_snippet()
         assert "command" in snippet
-        assert "dmcp" in snippet["command"]
+        assert "promem" in snippet["command"]
 
 
 def test_generic_adapter_instructions():
     adapter = GenericAdapter()
     instructions = adapter.get_instructions()
     assert "mcpServers" in instructions
-    assert "d-mcp" in instructions
+    assert "promem-mcp" in instructions
 
 
 def test_vscode_adapter_instructions():

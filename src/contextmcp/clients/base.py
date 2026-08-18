@@ -26,7 +26,7 @@ class ClientAdapter(ABC):
         ...
 
     @abstractmethod
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         """Get the MCP server config snippet for this client."""
         ...
 
@@ -43,11 +43,11 @@ class ClientAdapter(ABC):
         try:
             data = json.loads(config_path.read_text(errors="replace"))
             servers = data.get(self.get_config_key(), {})
-            return "d-mcp" in servers
+            return "promem-mcp" in servers
         except (json.JSONDecodeError, OSError):
             return False
 
-    def write_config(self, backup: bool = True) -> dict:
+    def write_config(self, backup: bool = True) -> dict[str, Any]:
         """Write ContextMCP config to the client. Returns result dict."""
         config_path = self.get_config_path()
         if config_path is None:
@@ -77,14 +77,14 @@ class ClientAdapter(ABC):
         if key not in existing:
             existing[key] = {}
 
-        if "d-mcp" in existing[key]:
+        if "promem-mcp" in existing[key]:
             return {
                 "success": True,
                 "message": "ContextMCP already configured",
                 "path": str(config_path),
             }
 
-        existing[key]["d-mcp"] = self.get_config_snippet()
+        existing[key]["promem-mcp"] = self.get_config_snippet()
 
         try:
             config_path.write_text(json.dumps(existing, indent=2))
@@ -99,7 +99,7 @@ class ClientAdapter(ABC):
     def get_instructions(self) -> str:
         """Get manual configuration instructions if auto-config isn't possible."""
         key = self.get_config_key()
-        snippet = json.dumps({key: {"d-mcp": self.get_config_snippet()}}, indent=2)
+        snippet = json.dumps({key: {"promem-mcp": self.get_config_snippet()}}, indent=2)
         config_path = self.get_config_path()
         path_str = str(config_path) if config_path else "<client config file>"
         return (

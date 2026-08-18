@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import subprocess
 from pathlib import Path
+from typing import Any
 
 from contextmcp.security.redaction import redact_text
 
@@ -32,7 +33,7 @@ class GitAnalyzer:
         except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
             return None
 
-    def get_recent_commits(self, count: int = 10) -> list[dict]:
+    def get_recent_commits(self, count: int = 10) -> list[dict[str, Any]]:
         """Get recent commits with messages."""
         output = self._run_git([
             "log", f"-{count}", "--format=%H|%an|%ad|%s", "--date=short"
@@ -75,7 +76,7 @@ class GitAnalyzer:
             return []
         return [b.strip() for b in output.splitlines() if b.strip()]
 
-    def get_frequently_changed_files(self, count: int = 20) -> list[dict]:
+    def get_frequently_changed_files(self, count: int = 20) -> list[dict[str, Any]]:
         """Get files that are frequently changed."""
         output = self._run_git([
             "log", "--name-only", "--format=", f"-{count * 3}",
@@ -90,7 +91,7 @@ class GitAnalyzer:
             for f, c in counter.most_common(count)
         ]
 
-    def find_todos_fixmes(self) -> list[dict]:
+    def find_todos_fixmes(self) -> list[dict[str, Any]]:
         """Find TODO/FIXME comments in recently changed files."""
         changed = self.get_changed_files("HEAD~20")
         if not changed:
@@ -116,7 +117,7 @@ class GitAnalyzer:
                 continue
         return results[:50]  # Limit results
 
-    def get_summary(self) -> dict:
+    def get_summary(self) -> dict[str, Any]:
         """Get a comprehensive git summary."""
         return {
             "root": str(self.git_root) if self.git_root else None,

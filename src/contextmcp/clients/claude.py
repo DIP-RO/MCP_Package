@@ -6,6 +6,7 @@ import os
 import shutil
 import sys
 from pathlib import Path
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -27,9 +28,9 @@ class ClaudeCodeAdapter(ClientAdapter):
         else:
             return Path.home() / ".claude.json"
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
-            "command": "dmcp",
+            "command": "promem",
             "args": [],
         }
 
@@ -64,10 +65,10 @@ class ClaudeDesktopAdapter(ClientAdapter):
             return Path(appdata) / "Claude" / "claude_desktop_config.json"
         return None
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         # Use absolute path to dmcp executable
-        exe = shutil.which("dmcp")
-        command = exe or "dmcp"
+        exe = shutil.which("promem")
+        command = exe or "promem"
         return {
             "command": command,
             "args": [],

@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -34,9 +35,9 @@ class WindsurfAdapter(ClientAdapter):
             return Path.cwd() / ".codeium" / "mcp_config.json"
         return Path.home() / ".codeium" / "mcp_config.json"
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
-            "command": "dmcp",
+            "command": "promem",
             "args": [],
         }
 

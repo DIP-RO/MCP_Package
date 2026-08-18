@@ -7,6 +7,7 @@ This is how MCP hosts launch it as a subprocess — no `serve` command needed.
 from __future__ import annotations
 
 import sys
+from typing import Any
 
 import click
 
@@ -118,11 +119,11 @@ def repair() -> None:
     sys.exit(_run_command("repair"))
 
 
-def _run_command(name: str, *args) -> int:
+def _run_command(name: str, *args: Any) -> int:
     """Run a CLI command by name."""
     from contextmcp.cli import commands as cmds
 
-    func_map = {
+    func_map: dict[str, Any] = {
         "status": cmds.cmd_status,
         "doctor": cmds.cmd_doctor,
         "stats": cmds.cmd_stats,
@@ -142,7 +143,8 @@ def _run_command(name: str, *args) -> int:
         click.echo(f"Unknown command: {name}", err=True)
         return 1
 
-    return func(*args)
+    result = func(*args)
+    return int(result) if result is not None else 0
 
 
 def main() -> None:

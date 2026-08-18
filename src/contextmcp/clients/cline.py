@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -39,9 +40,9 @@ class ClineAdapter(ClientAdapter):
             return Path.cwd() / ".cline" / "mcp.json"
         return Path.home() / ".cline" / "mcp.json"
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
-            "command": "dmcp",
+            "command": "promem",
             "args": [],
             "disabled": False,
             "autoApprove": [],

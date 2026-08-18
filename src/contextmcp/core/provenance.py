@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from typing import Any
 
 
 def create_provenance(
     source: str,
     source_type: str = "observed",
     confidence: float = 0.5,
-) -> dict:
+) -> dict[str, Any]:
     """Create a provenance record for a memory."""
     return {
         "source": source,
@@ -19,7 +20,7 @@ def create_provenance(
     }
 
 
-def format_provenance(memory: dict) -> str:
+def format_provenance(memory: dict[str, Any]) -> str:
     """Format provenance for display."""
     source = memory.get("source", "unknown")
     source_type = memory.get("source_type", "observed")
@@ -28,7 +29,9 @@ def format_provenance(memory: dict) -> str:
     return f"source={source} type={source_type} confidence={confidence:.0%}"
 
 
-def merge_provenance(existing: dict, new_source: str, new_confidence: float) -> dict:
+def merge_provenance(
+    existing: dict[str, Any], new_source: str, new_confidence: float,
+) -> dict[str, Any]:
     """Merge a new source into existing provenance, boosting confidence."""
     sources = existing.get("sources", [])
     if new_source not in sources:

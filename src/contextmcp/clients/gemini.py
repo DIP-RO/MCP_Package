@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -27,9 +28,9 @@ class GeminiCLIAdapter(ClientAdapter):
             return Path.cwd() / ".gemini" / "settings.json"
         return Path.home() / ".gemini" / "settings.json"
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
-            "command": "dmcp",
+            "command": "promem",
             "args": [],
             "timeout": 30000,
             "trust": False,

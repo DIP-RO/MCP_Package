@@ -5,12 +5,13 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 
 class EnvironmentInfo:
     """Detected environment information."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.python_version = (
             f"{sys.version_info.major}."
             f"{sys.version_info.minor}."
@@ -43,7 +44,9 @@ class EnvironmentInfo:
         """Detect the type of virtual environment."""
         if not self._detect_virtualenv():
             return None
-        venv_path = Path(self._detect_virtualenv())
+        venv_str = self._detect_virtualenv()
+        assert venv_str is not None
+        venv_path = Path(venv_str)
         if (venv_path / "pyvenv.cfg").exists():
             try:
                 cfg = (venv_path / "pyvenv.cfg").read_text(errors="replace")
@@ -84,7 +87,7 @@ class EnvironmentInfo:
                 env_files.append(name)
         return env_files
 
-    def _detect_docker(self) -> dict | None:
+    def _detect_docker(self) -> dict[str, Any] | None:
         """Detect Docker configuration."""
         cwd = Path.cwd()
         docker = {}
@@ -94,7 +97,7 @@ class EnvironmentInfo:
             docker["compose"] = True
         return docker if docker else None
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "python_version": self.python_version,
             "python_path": self.python_path,
@@ -106,7 +109,7 @@ class EnvironmentInfo:
             "package_count": len(self.installed_packages),
         }
 
-    def to_detailed_dict(self) -> dict:
+    def to_detailed_dict(self) -> dict[str, Any]:
         d = self.to_dict()
         d["installed_packages"] = self.installed_packages
         d["env_vars"] = self.env_vars

@@ -4,9 +4,12 @@ from __future__ import annotations
 
 import re
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
 
-def detect_stale_memories(memories: list[dict], current_facts: list[dict]) -> list[dict]:
+def detect_stale_memories(
+    memories: list[dict[str, Any]], current_facts: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
     """Detect memories that may be stale based on current evidence.
 
     Compares stored memories against freshly observed facts.
@@ -61,7 +64,7 @@ def detect_stale_memories(memories: list[dict], current_facts: list[dict]) -> li
     return findings
 
 
-def _check_conflicts(memory: dict, current_facts: list[dict]) -> str | None:
+def _check_conflicts(memory: dict[str, Any], current_facts: list[dict[str, Any]]) -> str | None:
     """Check if a memory conflicts with current facts."""
     mem_content = memory.get("content", "").lower()
 
@@ -90,7 +93,7 @@ def _check_conflicts(memory: dict, current_facts: list[dict]) -> str | None:
     return None
 
 
-def detect_contradictions(memories: list[dict]) -> list[dict]:
+def detect_contradictions(memories: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Detect contradictory rules in stored memories."""
     findings = []
 

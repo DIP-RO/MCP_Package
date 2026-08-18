@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 
 class ProjectIsolationError(Exception):
     """Raised when project isolation would be violated."""
     pass
 
 
-def assert_project_scope(memory: dict, project_id: str | None) -> None:
+def assert_project_scope(memory: dict[str, Any], project_id: str | None) -> None:
     """Ensure a memory belongs to the correct project scope."""
     mem_project = memory.get("project_id")
     mem_scope = memory.get("scope")
@@ -26,7 +28,9 @@ def assert_project_scope(memory: dict, project_id: str | None) -> None:
         )
 
 
-def filter_project_memories(memories: list[dict], project_id: str | None) -> list[dict]:
+def filter_project_memories(
+    memories: list[dict[str, Any]], project_id: str | None,
+) -> list[dict[str, Any]]:
     """Filter memories to only include those belonging to the project or global scope."""
     result = []
     for mem in memories:

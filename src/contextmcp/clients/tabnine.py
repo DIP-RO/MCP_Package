@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -26,9 +27,9 @@ class TabnineAdapter(ClientAdapter):
             return Path.cwd() / ".tabnine" / "mcp.json"
         return Path.home() / ".tabnine" / "mcp.json"
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
-            "command": "dmcp",
+            "command": "promem",
             "args": [],
         }
 

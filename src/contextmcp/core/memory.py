@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
 from contextmcp.security.validation import (
     validate_memory_type,
@@ -34,10 +35,10 @@ class MemoryManager:
         confidence: float = 0.5,
         importance: float = 0.5,
         tags: list[str] | None = None,
-        metadata: dict | None = None,
+        metadata: dict[str, Any] | None = None,
         expires_at: str | None = None,
         deduplicate: bool = True,
-    ) -> dict:
+    ) -> dict[str, Any] | None:
         """Save a memory. Returns the saved memory dict."""
         if not content or not content.strip():
             raise MemoryError("Content cannot be empty")
@@ -85,7 +86,7 @@ class MemoryManager:
         )
         return self.store.get_memory(mem_id)
 
-    def get(self, mem_id: str) -> dict | None:
+    def get(self, mem_id: str) -> dict[str, Any] | None:
         return self.store.get_memory(mem_id)
 
     def update(
@@ -95,8 +96,8 @@ class MemoryManager:
         confidence: float | None = None,
         importance: float | None = None,
         tags: list[str] | None = None,
-        metadata: dict | None = None,
-    ) -> dict | None:
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any] | None:
         success = self.store.update_memory(
             mem_id, content, confidence, importance, tags, metadata
         )
@@ -107,14 +108,14 @@ class MemoryManager:
     def delete(self, mem_id: str) -> bool:
         return self.store.delete_memory(mem_id)
 
-    def list(
+    def list_memories(
         self,
         project_id: str | None = None,
         scope: str | None = None,
         mem_type: str | None = None,
         limit: int = 100,
         offset: int = 0,
-    ) -> list[dict]:
+    ) -> list[dict[str, Any]]:
         return self.store.list_memories(project_id, scope, mem_type, limit, offset)
 
     def count(self, project_id: str | None = None) -> int:
@@ -127,7 +128,7 @@ class MemoryManager:
         affected: list[str] | None = None,
         project_id: str | None = None,
         source: str = "user",
-    ) -> dict:
+    ) -> dict[str, Any] | None:
         """Save a technical decision as a first-class memory."""
         content = f"Decision: {decision}"
         if reason:
@@ -157,7 +158,7 @@ class MemoryManager:
         important_files: list[str] | None = None,
         decisions: list[str] | None = None,
         next_action: str | None = None,
-    ) -> dict:
+    ) -> dict[str, Any] | None:
         """Save a session summary for continuity."""
         session_id = str(uuid.uuid4())
         self.store.insert_session(

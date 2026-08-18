@@ -4,14 +4,15 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from typing import Any
 
 from contextmcp.environment.detector import EnvironmentInfo
 from contextmcp.environment.env_parser import compare_env_files
 
 
-def run_diagnostics(project_root: Path | None = None) -> dict:
+def run_diagnostics(project_root: Path | None = None) -> dict[str, Any]:
     """Run environment diagnostics and return findings."""
-    findings: list[dict] = []
+    findings: list[dict[str, Any]] = []
     env = EnvironmentInfo()
 
     root = project_root or Path.cwd()

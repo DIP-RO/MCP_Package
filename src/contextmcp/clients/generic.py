@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -19,9 +20,9 @@ class GenericAdapter(ClientAdapter):
     def get_config_path(self, scope: str = "user") -> None:
         return None
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
-            "command": "dmcp",
+            "command": "promem",
             "args": [],
         }
 
@@ -29,7 +30,7 @@ class GenericAdapter(ClientAdapter):
         return "mcpServers"
 
     def get_instructions(self) -> str:
-        snippet = json.dumps({"mcpServers": {"d-mcp": self.get_config_snippet()}}, indent=2)
+        snippet = json.dumps({"mcpServers": {"promem-mcp": self.get_config_snippet()}}, indent=2)
         return (
             "Add the following to your MCP client's configuration file:\n\n"
             f"```json\n{snippet}\n```"

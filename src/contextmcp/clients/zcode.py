@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from contextmcp.clients.base import ClientAdapter
 
@@ -27,10 +28,10 @@ class ZCodeAdapter(ClientAdapter):
         # ZCode primarily uses project-level config
         return Path.cwd() / ".zcode" / "config.json"
 
-    def get_config_snippet(self) -> dict:
+    def get_config_snippet(self) -> dict[str, Any]:
         return {
             "type": "stdio",
-            "command": "dmcp",
+            "command": "promem",
             "args": [],
         }
 

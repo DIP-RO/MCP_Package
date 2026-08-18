@@ -9,6 +9,7 @@ from contextmcp.core.retrieval import Retriever
 from contextmcp.project.detector import ProjectInfo, detect_project
 from contextmcp.project.identity import compute_fingerprint
 from contextmcp.storage.manager import StorageManager
+from contextmcp.storage.sqlite import SQLiteStore
 
 
 class ContextEngine:
@@ -93,8 +94,9 @@ class ContextEngine:
         return self._retriever
 
     @property
-    def store(self):
+    def store(self) -> SQLiteStore:
         self.ensure_initialized()
+        assert self._storage is not None
         return self._storage.get_store()
 
     def close(self) -> None:

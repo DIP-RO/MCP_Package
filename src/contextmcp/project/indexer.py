@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
+from typing import Any
 
 from contextmcp.project.identity import compute_file_hash
 from contextmcp.project.ignore import IgnoreMatcher
@@ -19,7 +20,7 @@ class Indexer:
         self.root = project_root
         self.ignore = IgnoreMatcher(project_root)
 
-    def index_incremental(self) -> dict:
+    def index_incremental(self) -> dict[str, Any]:
         """Index only changed files. Returns stats dict."""
         start = time.time()
         indexed = 0
@@ -89,7 +90,7 @@ class Indexer:
 
         return results
 
-    def get_stats(self) -> dict:
+    def get_stats(self) -> dict[str, Any]:
         """Get indexing statistics."""
         files = self.store.get_indexed_files(self.project_id)
         total_size = sum(f.get("size", 0) or 0 for f in files)

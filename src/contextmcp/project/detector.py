@@ -241,7 +241,7 @@ def detect_language(root: Path) -> str | None:
 
     if not scores:
         return None
-    return max(scores, key=scores.get)
+    return max(scores, key=lambda k: scores[k])
 
 
 def detect_framework(root: Path) -> str | None:
@@ -398,9 +398,9 @@ def _collect_dependencies(root: Path) -> list[str]:
                 if line and not line.startswith("#") and not line.startswith("-"):
                     # Extract package name
                     import re
-                    match = re.match(r'([a-zA-Z0-9_-]+)', line)
-                    if match:
-                        deps.append(match.group(1).lower())
+                    m: re.Match[str] | None = re.match(r'([a-zA-Z0-9_-]+)', line)
+                    if m:
+                        deps.append(m.group(1).lower())
         except OSError:
             pass
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+from typing import Any
 
 from contextmcp.core.ranking import deduplicate, rank_memories
 from contextmcp.core.token_budget import (
@@ -19,7 +20,7 @@ class RetrievalResult:
 
     def __init__(
         self,
-        memories: list[dict],
+        memories: list[dict[str, Any]],
         estimated_tokens: int,
         latency_ms: float,
         total_found: int,
@@ -29,7 +30,7 @@ class RetrievalResult:
         self.latency_ms = latency_ms
         self.total_found = total_found
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "memories": [
                 {

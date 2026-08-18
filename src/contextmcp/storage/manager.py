@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from contextmcp.config.settings import get_settings
+from contextmcp.config.settings import Settings, get_settings
 from contextmcp.storage.sqlite import SQLiteStore, get_connection
 
 
 class StorageManager:
     """Manages local storage directory and database connections."""
 
-    def __init__(self, settings=None):
+    def __init__(self, settings: Settings | None = None):
         self.settings = settings or get_settings()
         self._store: SQLiteStore | None = None
 

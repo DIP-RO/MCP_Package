@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import Annotated
+from typing import Annotated, Any
 
 from pydantic import Field
 
@@ -16,7 +16,7 @@ from contextmcp.environment.diagnostics import run_diagnostics
 from contextmcp.git.analyzer import GitAnalyzer
 
 
-def _get_engine_components():
+def _get_engine_components() -> tuple[Any, ...]:
     """Get engine and its components."""
     engine = get_engine()
     return (
@@ -173,9 +173,11 @@ def context_project() -> str:
 def context_rules() -> str:
     """Get all project rules and coding conventions."""
     engine, memory, _, store, project_id, _ = _get_engine_components()
-    rules = memory.list(project_id=project_id, mem_type="project_rule", limit=50)
-    conventions = memory.list(project_id=project_id, mem_type="coding_convention", limit=50)
-    global_rules = memory.list(scope="global", mem_type="developer_preference", limit=20)
+    rules = memory.list_memories(project_id=project_id, mem_type="project_rule", limit=50)
+    conventions = memory.list_memories(
+        project_id=project_id, mem_type="coding_convention", limit=50,
+    )
+    global_rules = memory.list_memories(scope="global", mem_type="developer_preference", limit=20)
 
     all_rules = rules + conventions + global_rules
     compact = []
@@ -192,7 +194,7 @@ def context_rules() -> str:
 def context_decisions() -> str:
     """Get all technical/architecture decisions with reasoning."""
     engine, memory, _, store, project_id, _ = _get_engine_components()
-    decisions = memory.list(project_id=project_id, mem_type="technical_decision", limit=50)
+    decisions = memory.list_memories(project_id=project_id, mem_type="technical_decision", limit=50)
     compact = []
     for d in decisions:
         compact.append({
@@ -209,7 +211,7 @@ def context_recent(
 ) -> str:
     """Get recent memories and latest session summary for continuity."""
     engine, memory, _, store, project_id, _ = _get_engine_components()
-    recent = memory.list(project_id=project_id, limit=limit)
+    recent = memory.list_memories(project_id=project_id, limit=limit)
     session = store.get_latest_session(project_id)
 
     result = {
@@ -285,9 +287,9 @@ def context_summary() -> str:
         "root": str(info.root),
     }
 
-    rules = memory.list(project_id=project_id, mem_type="project_rule", limit=5)
-    decisions = memory.list(project_id=project_id, mem_type="technical_decision", limit=5)
-    architecture = memory.list(project_id=project_id, mem_type="architecture", limit=5)
+    rules = memory.list_memories(project_id=project_id, mem_type="project_rule", limit=5)
+    decisions = memory.list_memories(project_id=project_id, mem_type="technical_decision", limit=5)
+    architecture = memory.list_memories(project_id=project_id, mem_type="architecture", limit=5)
     session = store.get_latest_session(project_id)
 
     env = EnvironmentInfo()
@@ -298,7 +300,7 @@ def context_summary() -> str:
     }
 
     # Check for stale/contradictions
-    all_memories = memory.list(project_id=project_id, limit=100)
+    all_memories = memory.list_memories(project_id=project_id, limit=100)
     stale = detect_stale_memories(all_memories, [])
     contradictions = detect_contradictions(all_memories)
 

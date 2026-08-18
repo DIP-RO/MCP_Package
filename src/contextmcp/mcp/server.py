@@ -1,6 +1,6 @@
 """MCP server — the core entry point for AI coding agents.
 
-Running `dmcp` (or `python -m contextmcp.mcp.server`) starts the MCP
+Running `promem` (or `python -m contextmcp.mcp.server`) starts the MCP
 server over stdio, which is how MCP hosts launch it as a subprocess.
 """
 
@@ -24,7 +24,7 @@ from contextmcp.mcp.tools import (
     context_update,
 )
 
-mcp = MCPServer("D-MCP")
+mcp = MCPServer("Promem-MCP")
 
 
 @mcp.tool()
