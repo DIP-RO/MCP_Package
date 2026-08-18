@@ -48,33 +48,20 @@ That's it. Your AI coding agent now has persistent project context.
 
 ## How It Works
 
-```
-pip install promem-mcp
-        │
-        ▼
-┌───────────────────┐
-│    ContextMCP     │
-│  Python Package   │
-└─────────┬─────────┘
-          │
-  automatic project detection
-          │
-  ┌───────┼───────┐
-  ▼       ▼       ▼
-Project  Env    Git
-Context  Context Context
-  │       │       │
-  └───────┼───────┘
-          ▼
-  Persistent Memory (SQLite)
-          ▼
-  Intelligent Retrieval (FTS5)
-          ▼
-  Token Optimization
-          ▼
-  MCP Server (stdio)
-          ▼
-  AI Coding Agent
+```mermaid
+flowchart TD
+    A["pip install promem-mcp"] --> B["Promem-MCP\nPython Package"]
+    B --> C["Automatic Project Detection"]
+    C --> D["Project Context"]
+    C --> E["Environment Context"]
+    C --> F["Git Context"]
+    D --> G["Persistent Memory\nSQLite + FTS5"]
+    E --> G
+    F --> G
+    G --> H["Intelligent Retrieval\nFTS5 Search"]
+    H --> I["Token Optimization\nBudget-based Selection"]
+    I --> J["MCP Server\nstdio transport"]
+    J --> K["AI Coding Agent\nClaude, Cursor, VS Code, etc."]
 ```
 
 ## Features
