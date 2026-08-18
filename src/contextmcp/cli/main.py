@@ -1,6 +1,6 @@
-"""ContextMCP CLI entry point.
+"""Promem-MCP CLI entry point.
 
-Running `contextmcp` with no arguments starts the MCP server over stdio.
+Running `promem` with no arguments starts the MCP server over stdio.
 This is how MCP hosts launch it as a subprocess — no `serve` command needed.
 """
 
@@ -15,10 +15,10 @@ from contextmcp import __version__
 
 
 @click.group(invoke_without_command=True)
-@click.version_option(__version__, prog_name="contextmcp")
+@click.version_option(__version__, prog_name="promem")
 @click.pass_context
 def cli(ctx: click.Context) -> None:
-    """ContextMCP — Persistent project context for AI coding agents.
+    """Promem-MCP — Persistent project context for AI coding agents.
 
     Running with no command starts the MCP server (stdio transport).
     """
@@ -108,8 +108,16 @@ def reset(yes: bool) -> None:
 
 @cli.command()
 @click.argument("client_name", required=False)
-def config(client_name: str | None) -> None:
-    """Configure MCP client integration."""
+@click.option("--all", "all_clients", is_flag=True, help="Configure all detected clients at once")
+def config(client_name: str | None, all_clients: bool) -> None:
+    """Configure MCP client integration.
+
+    Run `promem config` to see detected clients.
+    Run `promem config cursor` to configure a specific client.
+    Run `promem config --all` to auto-configure all detected clients.
+    """
+    if all_clients:
+        sys.exit(_run_command("config_all"))
     sys.exit(_run_command("config", client_name))
 
 
@@ -135,6 +143,7 @@ def _run_command(name: str, *args: Any) -> int:
         "privacy": cmds.cmd_privacy,
         "reset": cmds.cmd_reset,
         "config": cmds.cmd_config,
+        "config_all": cmds.cmd_config_all,
         "repair": cmds.cmd_repair,
     }
 

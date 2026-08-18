@@ -22,7 +22,7 @@ def test_cli_help():
     runner = CliRunner()
     result = runner.invoke(cli, ["--help"])
     assert result.exit_code == 0
-    assert "ContextMCP" in result.output
+    assert "Promem-MCP" in result.output
 
 
 def test_cli_privacy(tmp_data_dir: Path):
@@ -40,7 +40,7 @@ def test_cli_status(tmp_project: Path, tmp_data_dir: Path, monkeypatch):
     runner = CliRunner()
     result = runner.invoke(cli, ["status"])
     assert result.exit_code == 0
-    assert "ContextMCP" in result.output
+    assert "Promem-MCP" in result.output
 
 
 def test_cli_search(tmp_project: Path, tmp_data_dir: Path, monkeypatch):

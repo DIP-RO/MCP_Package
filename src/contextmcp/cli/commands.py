@@ -15,7 +15,7 @@ from contextmcp.storage.manager import StorageManager
 
 
 def cmd_status() -> int:
-    """Show ContextMCP status."""
+    """Show Promem-MCP status."""
     try:
         engine = get_engine()
         info = engine.project_info
@@ -41,7 +41,7 @@ def cmd_status() -> int:
         db_exists = settings.db_path.exists()
         db_size = settings.db_path.stat().st_size if db_exists else 0
 
-        print("ContextMCP")
+        print("Promem-MCP")
         print("─" * 30)
         print()
         print("Project:")
@@ -84,7 +84,7 @@ def cmd_status() -> int:
 
 def cmd_doctor() -> int:
     """Run diagnostics."""
-    print("ContextMCP Doctor")
+    print("Promem-MCP Doctor")
     print("─" * 40)
     print()
 
@@ -158,12 +158,12 @@ def cmd_doctor() -> int:
             status = "✓ Configured" if configured else "⚠ Detected, not configured"
             print(f"  {adapter.display_name}: {status}")
             if not configured:
-                print(f"    Run: contextmcp config {adapter.name}")
+                print(f"    Run: promem config {adapter.name}")
             checks_passed += 1
     else:
         print("  ⚠ No supported AI clients detected")
         checks_warning += 1
-        print("  Manual configuration required. See: contextmcp config --help")
+        print("  Manual configuration required. See: promem config --help")
 
     print()
     print(f"Summary: {checks_passed} passed, {checks_warning} warnings, {checks_failed} errors")
@@ -180,7 +180,7 @@ def cmd_stats() -> int:
     stats = store.get_stats_summary(project_id)
     memory_count = engine.memory.count(project_id)
 
-    print("ContextMCP Stats")
+    print("Promem-MCP Stats")
     print("─" * 30)
     print()
     print(f"Queries: {stats['queries']}")
@@ -290,7 +290,7 @@ def cmd_decision(content: str, reason: str | None = None) -> int:
 
 def cmd_privacy() -> int:
     """Show privacy information."""
-    print("ContextMCP Privacy")
+    print("Promem-MCP Privacy")
     print("─" * 30)
     print()
     print("Storage:")
@@ -320,7 +320,7 @@ def cmd_privacy() -> int:
 
 
 def cmd_reset(confirm: bool = False) -> int:
-    """Reset all ContextMCP data."""
+    """Reset all Promem-MCP data."""
     reset_engine()
     settings = get_settings()
 
@@ -330,7 +330,7 @@ def cmd_reset(confirm: bool = False) -> int:
     projects = store.get_all_projects()
     total_memories = store.count_memories(None)
 
-    print("This will permanently delete ContextMCP local memory.")
+    print("This will permanently delete Promem-MCP local memory.")
     print()
     print(f"Projects: {len(projects)}")
     print(f"Memory items: {total_memories}")
@@ -343,7 +343,7 @@ def cmd_reset(confirm: bool = False) -> int:
             return 0
 
     sm.reset()
-    print("All ContextMCP data has been deleted.")
+    print("All Promem-MCP data has been deleted.")
     return 0
 
 
@@ -371,7 +371,7 @@ def cmd_config(client_name: str | None = None) -> int:
         return 0
 
     # List all clients
-    print("ContextMCP Client Configuration")
+    print("Promem-MCP Client Configuration")
     print("─" * 40)
     print()
     detected = detect_clients()
@@ -382,7 +382,9 @@ def cmd_config(client_name: str | None = None) -> int:
             status = "✓ configured" if configured else "⚠ not configured"
             print(f"  {adapter.display_name} ({adapter.name}): {status}")
             if not configured:
-                print(f"    Run: contextmcp config {adapter.name}")
+                print(f"    Run: promem config {adapter.name}")
+        print()
+        print("Or configure all at once: promem config --all")
         print()
     else:
         print("No supported AI clients detected.")
@@ -393,13 +395,56 @@ def cmd_config(client_name: str | None = None) -> int:
         detected_status = "detected" if adapter.detect() else "not detected"
         print(f"  {adapter.display_name} ({adapter.name}): {detected_status}")
     print()
-    print("Usage: contextmcp config <client-name>")
+    print("Usage: promem config <client-name>")
+    print("       promem config --all")
+    return 0
+
+
+def cmd_config_all() -> int:
+    """Auto-configure all detected clients at once."""
+    print("Promem-MCP — Auto-Configure All Detected Clients")
+    print("─" * 50)
+    print()
+    detected = detect_clients()
+    if not detected:
+        print("No supported AI clients detected.")
+        print("Use `promem config <client-name>` to configure a specific client.")
+        return 0
+
+    success_count = 0
+    fail_count = 0
+    already_configured = 0
+
+    for adapter in detected:
+        if adapter.is_configured():
+            print(f"  ✓ {adapter.display_name}: already configured")
+            already_configured += 1
+            continue
+
+        result = adapter.write_config(backup=True)
+        if result["success"]:
+            print(f"  ✓ {adapter.display_name}: {result['message']}")
+            print(f"    Config: {result.get('path', 'N/A')}")
+            success_count += 1
+        else:
+            print(f"  ✗ {adapter.display_name}: {result.get('error', 'Failed')}")
+            print(f"    Manual: promem config {adapter.name}")
+            fail_count += 1
+
+    print()
+    print(
+        f"Summary: {success_count} configured, "
+        f"{already_configured} already done, {fail_count} failed"
+    )
+    if success_count > 0 or already_configured > 0:
+        print()
+        print("Restart your AI clients for changes to take effect.")
     return 0
 
 
 def cmd_repair() -> int:
-    """Repair ContextMCP data (rebuild index, repair DB)."""
-    print("ContextMCP Repair")
+    """Repair Promem-MCP data (rebuild index, repair DB)."""
+    print("Promem-MCP Repair")
     print("─" * 30)
     print()
 
