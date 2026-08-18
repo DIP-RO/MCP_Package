@@ -30,7 +30,7 @@ class ZCodeAdapter(ClientAdapter):
     def get_config_snippet(self) -> dict:
         return {
             "type": "stdio",
-            "command": "contextmcp",
+            "command": "dmcp",
             "args": [],
         }
 

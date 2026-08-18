@@ -29,7 +29,7 @@ class ClaudeCodeAdapter(ClientAdapter):
 
     def get_config_snippet(self) -> dict:
         return {
-            "command": "contextmcp",
+            "command": "dmcp",
             "args": [],
         }
 
@@ -65,9 +65,9 @@ class ClaudeDesktopAdapter(ClientAdapter):
         return None
 
     def get_config_snippet(self) -> dict:
-        # Use absolute path to contextmcp executable
-        exe = shutil.which("contextmcp")
-        command = exe or "contextmcp"
+        # Use absolute path to dmcp executable
+        exe = shutil.which("dmcp")
+        command = exe or "dmcp"
         return {
             "command": command,
             "args": [],

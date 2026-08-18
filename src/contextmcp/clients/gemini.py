@@ -29,7 +29,7 @@ class GeminiCLIAdapter(ClientAdapter):
 
     def get_config_snippet(self) -> dict:
         return {
-            "command": "contextmcp",
+            "command": "dmcp",
             "args": [],
             "timeout": 30000,
             "trust": False,

@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "contextmcp"
+name = "d-mcp"
 version = "0.1.0"
 description = "Persistent project context runtime for AI coding agents — local-first, MCP-native, token-efficient."
 readme = "README.md"
@@ -44,6 +44,7 @@ dev = [
 
 [project.scripts]
 contextmcp = "contextmcp.cli.main:cli"
+dmcp = "contextmcp.cli.main:cli"
 
 [project.urls]
 Homepage = "https://github.com/DIP-RO/MCP_Package"

@@ -1,9 +1,9 @@
-# ContextMCP
+# D-MCP
 
-> Persistent project context for AI coding agents.
+> Persistent project context for AI coding agents. Built by DIP-RO.
 
 ```bash
-pip install contextmcp
+pip install d-mcp
 ```
 
 **No database. No cloud. No daemon. No manual memory management.**
@@ -13,20 +13,20 @@ ContextMCP is a local-first, MCP-native context runtime that gives AI coding age
 ## Quick Start
 
 ```bash
-pip install contextmcp
+pip install d-mcp
 ```
 
 Then register ContextMCP with your AI coding client:
 
 ```bash
 # See which clients are detected
-contextmcp config
+dmcp config
 
 # Auto-configure a specific client (with backup + merge)
-contextmcp config cursor
-contextmcp config claude-code
-contextmcp config claude-desktop
-contextmcp config vscode
+dmcp config cursor
+dmcp config claude-code
+dmcp config claude-desktop
+dmcp config vscode
 ```
 
 Or manually add to your client's MCP config:
@@ -42,14 +42,14 @@ Or manually add to your client's MCP config:
 }
 ```
 
-> **VS Code note:** VS Code uses `"servers"` key, not `"mcpServers"`. Run `contextmcp config vscode` for the correct format.
+> **VS Code note:** VS Code uses `"servers"` key, not `"mcpServers"`. Run `dmcp config vscode` for the correct format.
 
 That's it. Your AI coding agent now has persistent project context.
 
 ## How It Works
 
 ```
-pip install contextmcp
+pip install d-mcp
         │
         ▼
 ┌───────────────────┐
@@ -115,34 +115,34 @@ Context  Context Context
 
 ```bash
 contextmcp --version        # Version
-contextmcp status           # Project + storage status
-contextmcp doctor           # Health checks
-contextmcp stats            # Usage statistics
-contextmcp search "query"   # Search context
-contextmcp memory list      # List memories
-contextmcp decision "text"  # Save a decision
-contextmcp privacy          # Privacy info
-contextmcp config           # Client configuration
-contextmcp repair           # Rebuild index, optimize DB
-contextmcp reset            # Delete all data (with confirmation)
+dmcp status           # Project + storage status
+dmcp doctor           # Health checks
+dmcp stats            # Usage statistics
+dmcp search "query"   # Search context
+dmcp memory list      # List memories
+dmcp decision "text"  # Save a decision
+dmcp privacy          # Privacy info
+dmcp config           # Client configuration
+dmcp repair           # Rebuild index, optimize DB
+dmcp reset            # Delete all data (with confirmation)
 ```
 
 ## Client Support
 
 | Client | Auto-config? | Config Key |
 |--------|-------------|------------|
-| Claude Code | `contextmcp config claude-code` | `mcpServers` |
-| Claude Desktop | `contextmcp config claude-desktop` | `mcpServers` |
-| Cursor | `contextmcp config cursor` | `mcpServers` |
-| VS Code / Copilot | `contextmcp config vscode` | `servers` |
-| OpenCode | `contextmcp config opencode` | `mcp` |
-| Gemini CLI | `contextmcp config gemini-cli` | `mcpServers` |
-| Windsurf | `contextmcp config windsurf` | `mcpServers` |
-| Cline | `contextmcp config cline` | `mcpServers` |
-| Roo Code | `contextmcp config roo-code` | `mcpServers` |
-| Amazon Q | `contextmcp config amazon-q` | `mcpServers` |
-| ZCode (GLM/Zhipu) | `contextmcp config zcode` | `mcpServers` |
-| Tabnine | `contextmcp config tabnine` | `mcpServers` |
+| Claude Code | `dmcp config claude-code` | `mcpServers` |
+| Claude Desktop | `dmcp config claude-desktop` | `mcpServers` |
+| Cursor | `dmcp config cursor` | `mcpServers` |
+| VS Code / Copilot | `dmcp config vscode` | `servers` |
+| OpenCode | `dmcp config opencode` | `mcp` |
+| Gemini CLI | `dmcp config gemini-cli` | `mcpServers` |
+| Windsurf | `dmcp config windsurf` | `mcpServers` |
+| Cline | `dmcp config cline` | `mcpServers` |
+| Roo Code | `dmcp config roo-code` | `mcpServers` |
+| Amazon Q | `dmcp config amazon-q` | `mcpServers` |
+| ZCode (GLM/Zhipu) | `dmcp config zcode` | `mcpServers` |
+| Tabnine | `dmcp config tabnine` | `mcpServers` |
 
 No client supports true zero-config auto-registration. ContextMCP detects installed clients, offers to write config (with backup + merge), and provides exact copy-paste snippets.
 
@@ -154,7 +154,7 @@ No client supports true zero-config auto-registration. ContextMCP detects instal
 - **No cloud dependencies**
 
 ```bash
-contextmcp privacy
+dmcp privacy
 ```
 
 ## Storage Location
@@ -175,7 +175,7 @@ Override with `CONTEXTMCP_DATA_DIR` environment variable if needed.
 
 ```bash
 # pip
-pip install contextmcp
+pip install d-mcp
 
 # uv
 uv add contextmcp

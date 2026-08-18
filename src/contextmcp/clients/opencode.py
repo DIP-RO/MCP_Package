@@ -15,7 +15,7 @@ class OpenCodeAdapter(ClientAdapter):
 
     Config format differs from standard MCP:
     - Root key is 'mcp' (not 'mcpServers')
-    - command is an array: ["contextmcp"]
+    - command is an array: ["dmcp"]
     - type field required: "local"
     - Config file: opencode.json (project) or ~/.config/opencode/opencode.json (global)
     """
@@ -39,7 +39,7 @@ class OpenCodeAdapter(ClientAdapter):
     def get_config_snippet(self) -> dict:
         return {
             "type": "local",
-            "command": ["contextmcp"],
+            "command": ["dmcp"],
             "enabled": True,
         }
 
@@ -72,14 +72,14 @@ class OpenCodeAdapter(ClientAdapter):
         if key not in existing:
             existing[key] = {}
 
-        if "contextmcp" in existing[key]:
+        if "d-mcp" in existing[key]:
             return {
                 "success": True,
                 "message": "ContextMCP already configured",
                 "path": str(config_path),
             }
 
-        existing[key]["contextmcp"] = self.get_config_snippet()
+        existing[key]["d-mcp"] = self.get_config_snippet()
 
         try:
             config_path.write_text(json.dumps(existing, indent=2))
@@ -88,7 +88,7 @@ class OpenCodeAdapter(ClientAdapter):
             return {"success": False, "error": str(e)}
 
     def get_instructions(self) -> str:
-        snippet = json.dumps({"mcp": {"contextmcp": self.get_config_snippet()}}, indent=2)
+        snippet = json.dumps({"mcp": {"d-mcp": self.get_config_snippet()}}, indent=2)
         config_path = self.get_config_path()
         path_str = str(config_path) if config_path else "opencode.json"
         return (

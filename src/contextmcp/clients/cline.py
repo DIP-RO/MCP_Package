@@ -41,7 +41,7 @@ class ClineAdapter(ClientAdapter):
 
     def get_config_snippet(self) -> dict:
         return {
-            "command": "contextmcp",
+            "command": "dmcp",
             "args": [],
             "disabled": False,
             "autoApprove": [],

@@ -38,7 +38,7 @@ class VSCodeAdapter(ClientAdapter):
     def get_config_snippet(self) -> dict:
         return {
             "type": "stdio",
-            "command": "contextmcp",
+            "command": "dmcp",
             "args": [],
         }
 
@@ -46,7 +46,7 @@ class VSCodeAdapter(ClientAdapter):
         return "servers"  # VS Code uses 'servers', NOT 'mcpServers'
 
     def get_instructions(self) -> str:
-        snippet = json.dumps({"servers": {"contextmcp": self.get_config_snippet()}}, indent=2)
+        snippet = json.dumps({"servers": {"d-mcp": self.get_config_snippet()}}, indent=2)
         return (
             "VS Code uses a different config format (key is 'servers', not 'mcpServers').\n\n"
             "Option 1 — Workspace config (.vscode/mcp.json):\n"

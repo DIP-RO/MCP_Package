@@ -36,7 +36,7 @@ class CursorAdapter(ClientAdapter):
 
     def get_config_snippet(self) -> dict:
         return {
-            "command": "contextmcp",
+            "command": "dmcp",
             "args": [],
         }
 

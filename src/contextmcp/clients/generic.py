@@ -21,7 +21,7 @@ class GenericAdapter(ClientAdapter):
 
     def get_config_snippet(self) -> dict:
         return {
-            "command": "contextmcp",
+            "command": "dmcp",
             "args": [],
         }
 
@@ -29,7 +29,7 @@ class GenericAdapter(ClientAdapter):
         return "mcpServers"
 
     def get_instructions(self) -> str:
-        snippet = json.dumps({"mcpServers": {"contextmcp": self.get_config_snippet()}}, indent=2)
+        snippet = json.dumps({"mcpServers": {"d-mcp": self.get_config_snippet()}}, indent=2)
         return (
             "Add the following to your MCP client's configuration file:\n\n"
             f"```json\n{snippet}\n```"
