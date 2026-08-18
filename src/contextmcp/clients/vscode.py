@@ -31,10 +31,18 @@ class VSCodeAdapter(ClientAdapter):
             import shutil
             return shutil.which("code") is not None
 
-    def get_config_path(self, scope: str = "user") -> Path | None:
+    def get_config_path(self, scope: str = "project") -> Path | None:
         if scope == "project":
             return Path.cwd() / ".vscode" / "mcp.json"
-        return None  # User config is opened via command palette
+        # User-scope: check common locations
+        if os.name == "nt":
+            user = Path(os.environ.get("APPDATA", Path.home())) / "Code" / "User"
+        else:
+            user = Path.home() / ".vscode" / "user"
+        if user.exists():
+            return user / "mcp.json"
+        # Fallback to project-scope
+        return Path.cwd() / ".vscode" / "mcp.json"
 
     def get_config_snippet(self) -> dict[str, Any]:
         return {
