@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "promem-mcp"
-version = "0.1.1"
+version = "0.1.2"
 description = "Persistent project context runtime for AI coding agents — local-first, MCP-native, token-efficient."
 readme = "README.md"
 license = "MIT"

@@ -48,21 +48,7 @@ That's it. Your AI coding agent now has persistent project context.
 
 ## How It Works
 
-```mermaid
-flowchart TD
-    A["pip install promem-mcp"] --> B["Promem-MCP\nPython Package"]
-    B --> C["Automatic Project Detection"]
-    C --> D["Project Context"]
-    C --> E["Environment Context"]
-    C --> F["Git Context"]
-    D --> G["Persistent Memory\nSQLite + FTS5"]
-    E --> G
-    F --> G
-    G --> H["Intelligent Retrieval\nFTS5 Search"]
-    H --> I["Token Optimization\nBudget-based Selection"]
-    I --> J["MCP Server\nstdio transport"]
-    J --> K["AI Coding Agent\nClaude, Cursor, VS Code, etc."]
-```
+![How It Works](https://mermaid.ink/img/Zmxvd2NoYXJ0IFRECiAgICBBWyJwaXAgaW5zdGFsbCBwcm9tZW0tbWNwIl0gLS0-IEJbIlByb21lbS1NQ1AgUHl0aG9uIFBhY2thZ2UiXQogICAgQiAtLT4gQ1siQXV0b21hdGljIFByb2plY3QgRGV0ZWN0aW9uIl0KICAgIEMgLS0-IERbIlByb2plY3QgQ29udGV4dCJdCiAgICBDIC0tPiBFWyJFbnZpcm9ubWVudCBDb250ZXh0Il0KICAgIEMgLS0-IEZbIkdpdCBDb250ZXh0Il0KICAgIEQgLS0-IEdbIlBlcnNpc3RlbnQgTWVtb3J5IFNRTGl0ZSArIEZUUzUiXQogICAgRSAtLT4gRwogICAgRiAtLT4gRwogICAgRyAtLT4gSFsiSW50ZWxsaWdlbnQgUmV0cmlldmFsIEZUUzUgU2VhcmNoIl0KICAgIEggLS0-IElbIlRva2VuIE9wdGltaXphdGlvbiBCdWRnZXQtYmFzZWQgU2VsZWN0aW9uIl0KICAgIEkgLS0-IEpbIk1DUCBTZXJ2ZXIgc3RkaW8gdHJhbnNwb3J0Il0KICAgIEogLS0-IEtbIkFJIENvZGluZyBBZ2VudCBDbGF1ZGUsIEN1cnNvciwgVlMgQ29kZSwgZXRjLiJdCg==)
 
 ## Features
 
