@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from contextmcp.security.redaction import is_likely_secret, redact_value
+from contextmcp.security.redaction import is_likely_secret
 
 
 def parse_env_file(path: Path) -> dict[str, str]:

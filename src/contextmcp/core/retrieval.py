@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import time
-from typing import Any
 
-from contextmcp.core.ranking import rank_memories, deduplicate
-from contextmcp.core.token_budget import estimate_memory_tokens, fit_to_budget, format_memory_compact
+from contextmcp.core.ranking import deduplicate, rank_memories
+from contextmcp.core.token_budget import (
+    fit_to_budget,
+    format_memory_compact,
+)
 from contextmcp.security.isolation import filter_project_memories
 from contextmcp.security.validation import sanitize_query
 from contextmcp.storage.sqlite import SQLiteStore
@@ -144,7 +146,10 @@ class Retriever:
 def _get_context_pack(pack: str) -> list[str]:
     """Get memory types for a context pack."""
     packs = {
-        "backend": ["architecture", "technical_decision", "coding_convention", "project_rule", "dependency"],
+        "backend": [
+            "architecture", "technical_decision",
+            "coding_convention", "project_rule", "dependency",
+        ],
         "frontend": ["architecture", "coding_convention", "project_rule", "dependency"],
         "database": ["technical_decision", "project_rule", "coding_convention", "dependency"],
         "testing": ["coding_convention", "project_rule", "known_issue"],

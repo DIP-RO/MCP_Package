@@ -5,14 +5,17 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
-from typing import Any
 
 
 class EnvironmentInfo:
     """Detected environment information."""
 
     def __init__(self):
-        self.python_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+        self.python_version = (
+            f"{sys.version_info.major}."
+            f"{sys.version_info.minor}."
+            f"{sys.version_info.micro}"
+        )
         self.python_path = sys.executable
         self.virtual_env = self._detect_virtualenv()
         self.venv_type = self._detect_venv_type()
@@ -29,7 +32,10 @@ class EnvironmentInfo:
             return venv
         # Check if python path suggests a venv
         exe = Path(sys.executable)
-        if exe.parent.name in ("Scripts", "bin") and exe.parent.parent.name in (".venv", "venv", "env"):
+        if (
+            exe.parent.name in ("Scripts", "bin")
+            and exe.parent.parent.name in (".venv", "venv", "env")
+        ):
             return str(exe.parent.parent)
         return None
 

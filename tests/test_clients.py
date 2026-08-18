@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from contextmcp.clients.detector import detect_clients, get_all_adapters, get_adapter
-from contextmcp.clients.claude import ClaudeCodeAdapter, ClaudeDesktopAdapter
+from contextmcp.clients.claude import ClaudeCodeAdapter
 from contextmcp.clients.cursor import CursorAdapter
-from contextmcp.clients.vscode import VSCodeAdapter
+from contextmcp.clients.detector import get_adapter, get_all_adapters
 from contextmcp.clients.generic import GenericAdapter
+from contextmcp.clients.vscode import VSCodeAdapter
 
 
 def test_get_all_adapters():
@@ -32,12 +32,12 @@ def test_vscode_uses_servers_key():
     assert adapter.get_config_key() == "servers"
 
 
-def test_cursor_uses_mcpServers_key():
+def test_cursor_uses_mcp_servers_key():
     adapter = CursorAdapter()
     assert adapter.get_config_key() == "mcpServers"
 
 
-def test_claude_code_uses_mcpServers_key():
+def test_claude_code_uses_mcp_servers_key():
     adapter = ClaudeCodeAdapter()
     assert adapter.get_config_key() == "mcpServers"
 

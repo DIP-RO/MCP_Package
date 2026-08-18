@@ -29,7 +29,10 @@ def test_git_find_todos(tmp_git_project: Path):
 
     import subprocess
     subprocess.run(["git", "add", "."], cwd=str(tmp_git_project), capture_output=True)
-    subprocess.run(["git", "commit", "-m", "Add todo"], cwd=str(tmp_git_project), capture_output=True)
+    subprocess.run(
+        ["git", "commit", "-m", "Add todo"],
+        cwd=str(tmp_git_project), capture_output=True,
+    )
 
     analyzer = GitAnalyzer(tmp_git_project)
     todos = analyzer.find_todos_fixmes()

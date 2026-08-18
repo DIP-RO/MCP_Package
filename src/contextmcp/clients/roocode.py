@@ -33,7 +33,10 @@ class RooCodeAdapter(ClientAdapter):
     def get_config_path(self, scope: str = "user") -> Path | None:
         # Roo Code stores MCP settings in VS Code's globalStorage
         if sys.platform == "darwin":
-            base = Path.home() / "Library" / "Application Support" / "Code" / "User" / "globalStorage"
+            base = (
+                Path.home() / "Library" / "Application Support"
+                / "Code" / "User" / "globalStorage"
+            )
         elif os.name == "nt":
             base = Path(os.environ.get("APPDATA", "")) / "Code" / "User" / "globalStorage"
         else:

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import re
 from datetime import datetime, timedelta, timezone
-from typing import Any
 
 
 def detect_stale_memories(memories: list[dict], current_facts: list[dict]) -> list[dict]:

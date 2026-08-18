@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import sys
 from pathlib import Path
 
 from contextmcp.environment.detector import EnvironmentInfo
@@ -18,7 +17,6 @@ def run_diagnostics(project_root: Path | None = None) -> dict:
     root = project_root or Path.cwd()
 
     # Check Python version
-    py_version = f"{sys.version_info.major}.{sys.version_info.minor}"
     findings.append({
         "check": "python_version",
         "status": "ok",

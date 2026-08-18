@@ -70,8 +70,8 @@ class IgnoreMatcher:
 
     def should_index(self, path: Path) -> bool:
         """Check if a file should be indexed (not ignored, not binary, reasonable size)."""
-        from contextmcp.security.validation import is_binary_file, safe_file_size
         from contextmcp.config.settings import get_settings
+        from contextmcp.security.validation import is_binary_file, safe_file_size
 
         if self.is_ignored(path):
             return False

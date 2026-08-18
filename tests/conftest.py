@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 import os
-import tempfile
 from pathlib import Path
 
 import pytest
 
-from contextmcp.config.settings import reset_settings, Settings
+from contextmcp.config.settings import Settings, reset_settings
 
 
 @pytest.fixture

@@ -5,7 +5,6 @@ from __future__ import annotations
 from pathlib import Path
 
 from contextmcp.storage.manager import StorageManager
-from contextmcp.storage.sqlite import SQLiteStore, get_connection
 
 
 def test_storage_manager_creates_dir(tmp_data_dir: Path):

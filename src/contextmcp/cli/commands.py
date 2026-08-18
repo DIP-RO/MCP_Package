@@ -2,22 +2,15 @@
 
 from __future__ import annotations
 
-import json
 import sys
-from pathlib import Path
 
-from contextmcp.core.lifecycle import get_engine, reset_engine
-from contextmcp.core.memory import MemoryError
-from contextmcp.core.retrieval import Retriever
-from contextmcp.core.token_budget import estimate_tokens
-from contextmcp.environment.diagnostics import run_diagnostics
-from contextmcp.environment.detector import EnvironmentInfo
-from contextmcp.git.analyzer import GitAnalyzer
-from contextmcp.project.detector import detect_project
-from contextmcp.project.identity import compute_fingerprint
-from contextmcp.project.indexer import Indexer
 from contextmcp.clients.detector import detect_clients, get_all_adapters
 from contextmcp.config.settings import get_settings
+from contextmcp.core.lifecycle import get_engine, reset_engine
+from contextmcp.core.token_budget import estimate_tokens
+from contextmcp.environment.detector import EnvironmentInfo
+from contextmcp.environment.diagnostics import run_diagnostics
+from contextmcp.project.indexer import Indexer
 from contextmcp.storage.manager import StorageManager
 
 
@@ -51,34 +44,34 @@ def cmd_status() -> int:
         print("ContextMCP")
         print("─" * 30)
         print()
-        print(f"Project:")
+        print("Project:")
         print(f"  {info.name}")
         print()
-        print(f"Project ID:")
+        print("Project ID:")
         print(f"  {project_id}")
         print()
-        print(f"Storage:")
+        print("Storage:")
         print(f"  {'✓ Local' if db_exists else '✗ Not initialized'}")
         if db_exists:
             print(f"  {db_size / 1024:.1f} KB")
         print()
-        print(f"Memory:")
+        print("Memory:")
         print(f"  {memory_count} project items")
         print(f"  {global_count} global items")
         print()
-        print(f"Git:")
+        print("Git:")
         print(f"  {'✓ ' + git_status if info.git_root else '✗ ' + git_status}")
         print()
-        print(f"Environment:")
+        print("Environment:")
         print(f"  {'✓ ' + env_status}")
         print()
-        print(f"Framework:")
+        print("Framework:")
         print(f"  {info.framework or 'Not detected'}")
         print()
-        print(f"Language:")
+        print("Language:")
         print(f"  {info.language or 'Not detected'}")
         print()
-        print(f"Index:")
+        print("Index:")
         print(f"  {index_stats['file_count']} files")
         print(f"  {index_stats['total_size_mb']} MB indexed")
         print()
@@ -112,7 +105,7 @@ def cmd_doctor() -> int:
     # Check 2: Database
     try:
         engine = get_engine()
-        store = engine.store
+        engine.store  # noqa: F841
         print(f"✓ Database initialized at {settings.db_path}")
         checks_passed += 1
     except Exception as e:
@@ -199,7 +192,7 @@ def cmd_stats() -> int:
     # Estimate raw vs selected context
     all_memories = engine.memory.list(project_id=project_id, limit=10000)
     raw_tokens = sum(estimate_tokens(m.get("content", "")) for m in all_memories)
-    print(f"Estimated raw context:")
+    print("Estimated raw context:")
     print(f"  {raw_tokens:,} tokens")
     print()
 
@@ -212,12 +205,12 @@ def cmd_stats() -> int:
             token_budget=1000,
         )
         selected = result.estimated_tokens
-        print(f"Selected context (last query):")
+        print("Selected context (last query):")
         print(f"  {selected:,} tokens")
         print()
         if raw_tokens > 0:
             reduction = (1 - selected / raw_tokens) * 100
-            print(f"Estimated reduction:")
+            print("Estimated reduction:")
             print(f"  {reduction:.1f}%")
     else:
         print("No memories to calculate reduction.")
@@ -225,7 +218,12 @@ def cmd_stats() -> int:
     return 0
 
 
-def cmd_search(query: str, scope: str | None = None, limit: int = 5, token_budget: int = 1000) -> int:
+def cmd_search(
+    query: str,
+    scope: str | None = None,
+    limit: int = 5,
+    token_budget: int = 1000,
+) -> int:
     """Search context from CLI."""
     engine = get_engine()
     result = engine.retriever.search(
@@ -237,7 +235,10 @@ def cmd_search(query: str, scope: str | None = None, limit: int = 5, token_budge
     )
     print(result.to_compact_text())
     print()
-    print(f"({result.total_found} found, {len(result.memories)} returned, ~{result.estimated_tokens} tokens, {result.latency_ms:.1f}ms)")
+    print(
+        f"({result.total_found} found, {len(result.memories)} returned, "
+        f"~{result.estimated_tokens} tokens, {result.latency_ms:.1f}ms)"
+    )
     return 0
 
 

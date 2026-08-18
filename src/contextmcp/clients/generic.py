@@ -36,4 +36,3 @@ class GenericAdapter(ClientAdapter):
         )
 
 
-import json

@@ -98,7 +98,8 @@ class ClientAdapter(ABC):
 
     def get_instructions(self) -> str:
         """Get manual configuration instructions if auto-config isn't possible."""
-        snippet = json.dumps({self.get_config_key(): {"contextmcp": self.get_config_snippet()}}, indent=2)
+        key = self.get_config_key()
+        snippet = json.dumps({key: {"contextmcp": self.get_config_snippet()}}, indent=2)
         config_path = self.get_config_path()
         path_str = str(config_path) if config_path else "<client config file>"
         return (

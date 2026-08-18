@@ -2,17 +2,16 @@
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 from contextmcp.project.detector import (
+    detect_framework,
+    detect_language,
+    detect_package_manager,
     detect_project,
     find_project_root,
-    detect_language,
-    detect_framework,
-    detect_package_manager,
 )
-from contextmcp.project.identity import compute_fingerprint, compute_file_hash
+from contextmcp.project.identity import compute_file_hash, compute_fingerprint
 from contextmcp.project.ignore import IgnoreMatcher
 
 

@@ -2,21 +2,19 @@
 
 from __future__ import annotations
 
+from contextmcp.clients.amazonq import AmazonQAdapter
 from contextmcp.clients.base import ClientAdapter
 from contextmcp.clients.claude import ClaudeCodeAdapter, ClaudeDesktopAdapter
-from contextmcp.clients.cursor import CursorAdapter
-from contextmcp.clients.vscode import VSCodeAdapter
-from contextmcp.clients.copilot import CopilotAdapter
-from contextmcp.clients.opencode import OpenCodeAdapter
-from contextmcp.clients.gemini import GeminiCLIAdapter
-from contextmcp.clients.windsurf import WindsurfAdapter
 from contextmcp.clients.cline import ClineAdapter
+from contextmcp.clients.copilot import CopilotAdapter
+from contextmcp.clients.cursor import CursorAdapter
+from contextmcp.clients.gemini import GeminiCLIAdapter
+from contextmcp.clients.opencode import OpenCodeAdapter
 from contextmcp.clients.roocode import RooCodeAdapter
-from contextmcp.clients.amazonq import AmazonQAdapter
-from contextmcp.clients.zcode import ZCodeAdapter
 from contextmcp.clients.tabnine import TabnineAdapter
-from contextmcp.clients.generic import GenericAdapter
-
+from contextmcp.clients.vscode import VSCodeAdapter
+from contextmcp.clients.windsurf import WindsurfAdapter
+from contextmcp.clients.zcode import ZCodeAdapter
 
 ALL_ADAPTERS: list[type[ClientAdapter]] = [
     ClaudeCodeAdapter,

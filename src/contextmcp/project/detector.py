@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import Any
 
@@ -93,7 +92,6 @@ TEST_FRAMEWORKS = {
     "mocha": ["mocha"],
     "playwright": ["playwright"],
     "cypress": ["cypress"],
-    "unittest": ["unittest"],
 }
 
 

@@ -4,11 +4,9 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Any
 
 from contextmcp.project.detector import ProjectInfo
 from contextmcp.security.redaction import redact_text
-from contextmcp.security.validation import is_binary_file, safe_file_size
 
 
 def analyze_project_files(info: ProjectInfo) -> list[dict]:
@@ -200,7 +198,8 @@ def _analyze_readme(path: Path, info: ProjectInfo) -> list[dict]:
             break
 
     # Extract test commands
-    for match in re.finditer(r'(?:```(?:bash|shell)?\n)(pytest|npm test|yarn test|cargo test|go test)[^\n]*', content):
+    test_pattern = r'(?:```(?:bash|shell)?\n)(pytest|npm test|yarn test|cargo test|go test)[^\n]*'
+    for match in re.finditer(test_pattern, content):
         facts.append({
             "content": f"Test command: {match.group(0).split(chr(10))[-1].strip()}",
             "type": "coding_convention",

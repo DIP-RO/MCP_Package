@@ -5,7 +5,6 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
-from contextmcp.project.detector import ProjectInfo
 from contextmcp.project.identity import compute_file_hash
 from contextmcp.project.ignore import IgnoreMatcher
 from contextmcp.storage.sqlite import SQLiteStore

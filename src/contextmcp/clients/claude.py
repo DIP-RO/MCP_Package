@@ -55,9 +55,13 @@ class ClaudeDesktopAdapter(ClientAdapter):
 
     def get_config_path(self, scope: str = "user") -> Path | None:
         if sys.platform == "darwin":
-            return Path.home() / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
+            return (
+                Path.home() / "Library" / "Application Support"
+                / "Claude" / "claude_desktop_config.json"
+            )
         elif os.name == "nt":
-            return Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")) / "Claude" / "claude_desktop_config.json"
+            appdata = os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")
+            return Path(appdata) / "Claude" / "claude_desktop_config.json"
         return None
 
     def get_config_snippet(self) -> dict:

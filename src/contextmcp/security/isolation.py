@@ -20,7 +20,8 @@ def assert_project_scope(memory: dict, project_id: str | None) -> None:
     # Project-scoped memories must match
     if mem_project != project_id:
         raise ProjectIsolationError(
-            f"Memory project_id={mem_project!r} does not match requested project_id={project_id!r}. "
+            f"Memory project_id={mem_project!r} does not match "
+            f"requested project_id={project_id!r}. "
             "Cross-project memory access is blocked."
         )
 

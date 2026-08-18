@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from contextmcp.core.memory import MemoryManager, MemoryError
+from contextmcp.core.memory import MemoryError, MemoryManager
 from contextmcp.storage.manager import StorageManager
 
 

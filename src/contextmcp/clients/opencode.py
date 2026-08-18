@@ -33,7 +33,8 @@ class OpenCodeAdapter(ClientAdapter):
         if sys.platform == "darwin" or os.name != "nt":
             return Path.home() / ".config" / "opencode" / "opencode.json"
         else:
-            return Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")) / "opencode" / "opencode.json"
+            appdata = os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")
+            return Path(appdata) / "opencode" / "opencode.json"
 
     def get_config_snippet(self) -> dict:
         return {
@@ -72,7 +73,11 @@ class OpenCodeAdapter(ClientAdapter):
             existing[key] = {}
 
         if "contextmcp" in existing[key]:
-            return {"success": True, "message": "ContextMCP already configured", "path": str(config_path)}
+            return {
+                "success": True,
+                "message": "ContextMCP already configured",
+                "path": str(config_path),
+            }
 
         existing[key]["contextmcp"] = self.get_config_snippet()
 

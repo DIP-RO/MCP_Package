@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from contextmcp.core.context import detect_stale_memories, detect_contradictions
+from contextmcp.core.context import detect_contradictions, detect_stale_memories
 
 
 def test_detect_contradictions():

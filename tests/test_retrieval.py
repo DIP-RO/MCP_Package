@@ -115,8 +115,14 @@ def test_cross_project_isolation(tmp_data_dir: Path):
     mm = MemoryManager(store)
     rv = Retriever(store)
 
-    mm.save(content="Project A architecture rule", scope="project", mem_type="project_rule", project_id="proj_a")
-    mm.save(content="Project B architecture rule", scope="project", mem_type="project_rule", project_id="proj_b")
+    mm.save(
+        content="Project A architecture rule", scope="project",
+        mem_type="project_rule", project_id="proj_a",
+    )
+    mm.save(
+        content="Project B architecture rule", scope="project",
+        mem_type="project_rule", project_id="proj_b",
+    )
 
     result_a = rv.search("architecture", project_id="proj_a")
     for m in result_a.memories:

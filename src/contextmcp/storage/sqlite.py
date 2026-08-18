@@ -256,7 +256,10 @@ class SQLiteStore:
         return [self._row_to_memory(r) for r in rows]
 
     def count_memories(self, project_id: str | None = None) -> int:
-        sql = "SELECT COUNT(*) FROM memories WHERE (expires_at IS NULL OR expires_at > datetime('now'))"
+        sql = (
+            "SELECT COUNT(*) FROM memories "
+            "WHERE (expires_at IS NULL OR expires_at > datetime('now'))"
+        )
         params: list[Any] = []
         if project_id is not None:
             sql += " AND project_id = ?"
@@ -378,13 +381,17 @@ class SQLiteStore:
         token_count: int | None = None,
     ) -> None:
         self.conn.execute(
-            "INSERT INTO stats (project_id, operation, latency_ms, token_count) VALUES (?, ?, ?, ?)",
+            "INSERT INTO stats (project_id, operation, "
+            "latency_ms, token_count) VALUES (?, ?, ?, ?)",
             (project_id, operation, latency_ms, token_count),
         )
         self.conn.commit()
 
     def get_stats_summary(self, project_id: str | None = None) -> dict:
-        sql = "SELECT COUNT(*) as count, AVG(latency_ms) as avg_latency FROM stats WHERE operation = 'search'"
+        sql = (
+            "SELECT COUNT(*) as count, AVG(latency_ms) as avg_latency "
+            "FROM stats WHERE operation = 'search'"
+        )
         params: list[Any] = []
         if project_id is not None:
             sql += " AND project_id = ?"

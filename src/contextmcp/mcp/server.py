@@ -6,24 +6,22 @@ server over stdio, which is how MCP hosts launch it as a subprocess.
 
 from __future__ import annotations
 
-import sys
-
 from mcp.server import MCPServer
 
 from contextmcp.mcp.tools import (
-    context_search,
-    context_get,
-    context_save,
-    context_update,
-    context_delete,
-    context_project,
-    context_rules,
     context_decisions,
-    context_recent,
-    context_git,
-    context_environment,
+    context_delete,
     context_diagnostics,
+    context_environment,
+    context_get,
+    context_git,
+    context_project,
+    context_recent,
+    context_rules,
+    context_save,
+    context_search,
     context_summary,
+    context_update,
 )
 
 mcp = MCPServer("ContextMCP")

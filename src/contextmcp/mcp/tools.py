@@ -3,37 +3,45 @@
 from __future__ import annotations
 
 import json
-from typing import Annotated, Any
-from typing import Literal
+from typing import Annotated
 
 from pydantic import Field
 
+from contextmcp.core.context import detect_contradictions, detect_stale_memories
 from contextmcp.core.lifecycle import get_engine
-from contextmcp.core.memory import MemoryError, MemoryManager
-from contextmcp.core.retrieval import Retriever
+from contextmcp.core.memory import MemoryError
 from contextmcp.core.token_budget import estimate_tokens
-from contextmcp.environment.diagnostics import run_diagnostics
 from contextmcp.environment.detector import EnvironmentInfo
+from contextmcp.environment.diagnostics import run_diagnostics
 from contextmcp.git.analyzer import GitAnalyzer
-from contextmcp.project.analyzer import analyze_project_files
-from contextmcp.project.indexer import Indexer
-from contextmcp.core.context import detect_stale_memories, detect_contradictions
-from contextmcp.project.detector import detect_project
-from contextmcp.security.redaction import redact_text
 
 
 def _get_engine_components():
     """Get engine and its components."""
     engine = get_engine()
-    return engine, engine.memory, engine.retriever, engine.store, engine.project_id, engine.project_info
+    return (
+        engine, engine.memory, engine.retriever,
+        engine.store, engine.project_id, engine.project_info,
+    )
 
 
 def context_search(
     query: Annotated[str, Field(description="Natural language search query for project context")],
-    scope: Annotated[str | None, Field(description="Filter by scope: global, project, environment, git, session")] = None,
+    scope: Annotated[
+        str | None,
+        Field(description="Filter by scope: global, project, environment, git, session"),
+    ] = None,
     limit: Annotated[int, Field(ge=1, le=50, description="Maximum number of results")] = 5,
-    token_budget: Annotated[int, Field(ge=100, le=10000, description="Max estimated tokens to return")] = 1000,
-    context_pack: Annotated[str | None, Field(description="Focus area: backend, frontend, database, testing, deployment, architecture")] = None,
+    token_budget: Annotated[
+        int, Field(ge=100, le=10000, description="Max estimated tokens to return"),
+    ] = 1000,
+    context_pack: Annotated[
+        str | None,
+        Field(
+            description="Focus area: backend, frontend, database, "
+            "testing, deployment, architecture"
+        ),
+    ] = None,
 ) -> str:
     """Search persistent project context. Returns relevant memories within token budget.
 
@@ -65,12 +73,25 @@ def context_get(
 
 def context_save(
     content: Annotated[str, Field(description="The context/memory content to store")],
-    type: Annotated[str, Field(description="Memory type: project_rule, architecture, technical_decision, coding_convention, developer_preference, known_issue, todo, dependency, environment_fact, git_fact, session_summary")] = "project_rule",
-    scope: Annotated[str, Field(description="Memory scope: global, project, environment, git, session")] = "project",
+    type: Annotated[
+        str,
+        Field(description="Memory type: project_rule, architecture, technical_decision, "
+             "coding_convention, developer_preference, known_issue, todo, "
+             "dependency, environment_fact, git_fact, session_summary"),
+    ] = "project_rule",
+    scope: Annotated[
+        str, Field(description="Memory scope: global, project, environment, git, session"),
+    ] = "project",
     source: Annotated[str | None, Field(description="Where this memory came from")] = None,
-    source_type: Annotated[str, Field(description="Source type: observed, inferred, user, ai")] = "user",
-    confidence: Annotated[float, Field(ge=0.0, le=1.0, description="Confidence in this memory (0.0-1.0)")] = 0.8,
-    importance: Annotated[float, Field(ge=0.0, le=1.0, description="Importance level (0.0-1.0)")] = 0.5,
+    source_type: Annotated[
+        str, Field(description="Source type: observed, inferred, user, ai"),
+    ] = "user",
+    confidence: Annotated[
+        float, Field(ge=0.0, le=1.0, description="Confidence in this memory (0.0-1.0)"),
+    ] = 0.8,
+    importance: Annotated[
+        float, Field(ge=0.0, le=1.0, description="Importance level (0.0-1.0)"),
+    ] = 0.5,
     tags: Annotated[list[str] | None, Field(description="Tags for categorization")] = None,
 ) -> str:
     """Save a memory, decision, rule, or fact to persistent context.
@@ -103,8 +124,12 @@ def context_save(
 def context_update(
     memory_id: Annotated[str, Field(description="ID of the memory to update")],
     content: Annotated[str | None, Field(description="New content")] = None,
-    confidence: Annotated[float | None, Field(ge=0.0, le=1.0, description="New confidence value")] = None,
-    importance: Annotated[float | None, Field(ge=0.0, le=1.0, description="New importance value")] = None,
+    confidence: Annotated[
+        float | None, Field(ge=0.0, le=1.0, description="New confidence value"),
+    ] = None,
+    importance: Annotated[
+        float | None, Field(ge=0.0, le=1.0, description="New importance value"),
+    ] = None,
     tags: Annotated[list[str] | None, Field(description="New tags")] = None,
 ) -> str:
     """Update an existing memory. Only provided fields are changed."""
@@ -203,7 +228,9 @@ def context_recent(
 
 
 def context_git(
-    detail: Annotated[str, Field(description="Level of detail: summary, commits, files, todos")] = "summary",
+    detail: Annotated[
+        str, Field(description="Level of detail: summary, commits, files, todos"),
+    ] = "summary",
 ) -> str:
     """Get Git intelligence: recent commits, changed files, branches, TODOs/FIXMEs."""
     engine, _, _, _, _, info = _get_engine_components()

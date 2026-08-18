@@ -5,8 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from contextmcp.environment.detector import EnvironmentInfo
-from contextmcp.environment.env_parser import parse_env_file, get_env_keys, compare_env_files
 from contextmcp.environment.diagnostics import run_diagnostics
+from contextmcp.environment.env_parser import compare_env_files, get_env_keys, parse_env_file
 
 
 def test_environment_info():
